@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عيد ميلاد سعيد</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 600px;
+            z-index: 1;
+        }
+
+        .welcome-message {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff69b4;
+        }
+
+        .birthday-info {
+            font-size: 18px;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .countdown {
+            font-size: 20px;
+            color: #333;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        /* تصميم المعرض */
+        .gallery {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .gallery img {
+            width: 150px; /* تكبير عرض الصور */
+            height: 150px; /* تكبير ارتفاع الصور */
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-message" > ! عيد ميلاد سعيد رقرق </div>
+        <div class="birthday-info">    From Marco </div>
+        
+        <div class="countdown" id="countdown">Loading...</div>
+
+        <!-- معرض الصور -->
+        <div class="gallery">
+            <img src="img1.jpg" alt="صورة 1">
+            <img src="img2.jpg" alt="صورة 2">
+            <img src="img3.jpg" alt="صورة 3">
+        </div>
+    </div>
+
+    <!-- إضافة مكتبة Canvas Confetti عبر CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        const countdownElement = document.getElementById('countdown');
+        const birthday = new Date('2024-10-25');
+        let countdownTime = 3;
+
+        function startBirthdayCountdown() {
+            countdownElement.textContent = `باقي ${countdownTime} ثوانٍ!`;
+            const countdownInterval = setInterval(() => {
+                countdownTime--;
+                countdownElement.textContent = countdownTime > 0 ? `باقي ${countdownTime} ثوانٍ!` : "Happy Birthday ! 🎉";
+
+                if (countdownTime <= 0) {
+                    clearInterval(countdownInterval);
+                    startFireworks();
+                }
+            }, 1000);
+        }
+
+        function checkBirthday() {
+            if (new Date().toDateString() === birthday.toDateString()) {
+                startBirthdayCountdown();
+            } else {
+                const daysLeft = Math.ceil((birthday - new Date()) / (1000 * 60 * 60 * 24));
+                countdownElement.textContent = `باقي ${daysLeft} يومًا لعيد ميلادك!`;
+            }
+        }
+
+        function startFireworks() {
+            const duration = 10 * 1000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 }
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 }
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        }
+
+        checkBirthday();
+    </script>
+</body>
+</html>
